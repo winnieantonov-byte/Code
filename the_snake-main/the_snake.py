@@ -1,4 +1,5 @@
 import random
+
 import pygame
 
 # Константы для размеров поля и сетки:
@@ -32,7 +33,7 @@ SPEED = 20
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 
 # Заголовок окна игрового поля:
-pygame.display.set_caption('Змейка')
+pygame.display.set_caption("Змейка")
 
 # Настройка времени:
 clock = pygame.time.Clock()
@@ -41,7 +42,7 @@ clock = pygame.time.Clock()
 # Тут опишите все классы игры.
 class GameObject:
     def __init__(self) -> None:
-        self.position = ((SCREEN_WIDTH // 2),(SCREEN_HEIGHT // 2))
+        self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
     def draw(self):
         pass
@@ -52,31 +53,33 @@ class Apple(GameObject):
         super().__init__()
         self.body_color = APPLE_COLOR
         self.randomize_position()
-    
+
     def randomize_position(self):
-        self.position = int(random.randint(0, 640)/GRID_SIZE)*GRID_SIZE, int(random.randint(0, 480)/GRID_SIZE)*GRID_SIZE
-    
+        self.position = (
+            int(random.randint(0, 640) / GRID_SIZE) * GRID_SIZE,
+            int(random.randint(0, 480) / GRID_SIZE) * GRID_SIZE,
+        )
+
     def draw(self):
         rect = pygame.Rect((self.position), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
-
 class Snake(GameObject):
-    
-    def __init__(self):
-        
+
+   def __init__(self):
+
         super().__init__()
         self.body_color = SNAKE_COLOR
         self.length = 1
-        self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)] 
-        self.direction = (1, 0)  
-        self.next_direction = None  
-        self.last = None  
+        self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
+        self.direction = (1, 0)
+        self.next_direction = None
+        self.last = None
 
     def update_direction(self, direction):
-    
+
         if direction and (self.direction[0] * -1, self.direction[1] * -1) != direction:
             self.next_direction = direction
 
@@ -85,7 +88,10 @@ class Snake(GameObject):
             self.direction = self.next_direction
             self.next_direction = None
 
-        new_head = (self.positions[0][0] + self.direction[0] * GRID_SIZE,self.positions[0][1] + self.direction[1] * GRID_SIZE)
+        new_head = (
+            self.positions[0][0] + self.direction[0] * GRID_SIZE,
+            self.positions[0][1] + self.direction[1] * GRID_SIZE,
+        )
 
         new_head = self.wrap_around_screen(new_head)
 
@@ -112,6 +118,7 @@ class Snake(GameObject):
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = (1, 0)
         self.next_direction = None
+
     def wrap_around_screen(self, position):
         x, y = position
         if x < 0:
@@ -123,6 +130,7 @@ class Snake(GameObject):
         elif y >= SCREEN_HEIGHT:
             y = 0
         return x, y
+
 
 def handle_keys(snake):
     for event in pygame.event.get():
@@ -140,13 +148,13 @@ def handle_keys(snake):
                 snake.update_direction(RIGHT)
         elif event.type == pygame.KEYUP:
             snake.next_direction = None
-                
+
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Змейка")
-    
+
     snake = Snake()
     apple = Apple()
 
@@ -165,9 +173,10 @@ def main():
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw(screen)
         apple.draw()
-        
+
         pygame.display.update()
         clock.tick(10)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

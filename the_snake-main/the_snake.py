@@ -44,6 +44,7 @@ class GameObject:
     def __init__(self) -> None:
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
+
     def draw(self):
         pass
 
@@ -68,8 +69,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
 
-   def __init__(self):
-
+    def __init__(self):
         super().__init__()
         self.body_color = SNAKE_COLOR
         self.length = 1
@@ -79,7 +79,6 @@ class Snake(GameObject):
         self.last = None
 
     def update_direction(self, direction):
-
         if direction and (self.direction[0] * -1, self.direction[1] * -1) != direction:
             self.next_direction = direction
 
@@ -175,7 +174,7 @@ def main():
         apple.draw()
 
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(SPEED)
 
 
 if __name__ == "__main__":

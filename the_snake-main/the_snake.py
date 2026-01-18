@@ -157,7 +157,6 @@ def main():
     snake = Snake()
     apple = Apple()
 
-    clock = pygame.time.Clock()
     while True:
         handle_keys(snake)
         snake.move()

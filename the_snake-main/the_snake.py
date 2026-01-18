@@ -1,4 +1,4 @@
-"""docstring."""
+"""Импорты библеотек."""
 
 import random
 
@@ -43,42 +43,46 @@ clock = pygame.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
-    """docstring."""
+    """Базовый класс для всех игровых объектов."""
 
     def __init__(self) -> None:
-        """docstring."""
+        """Инициализирует базовые атрибуты."""
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
 
+    def draw(self):
+        """Пустышка."""
+        pass
+
 
 class Apple(GameObject):
-    """docstring."""
+    """Класс, описывающий яблоко."""
 
     def __init__(self):
-        """docstring."""
+        """Начальное состояние яблока."""
         super().__init__()
         self.body_color = APPLE_COLOR
         self.randomize_position()
 
     def randomize_position(self):
-        """docstring."""
+        """Устанавливает случайные координаты яблока, выровненные по сетке."""
         self.position = (
             int(random.randint(0, 640) / GRID_SIZE) * GRID_SIZE,
             int(random.randint(0, 480) / GRID_SIZE) * GRID_SIZE,
         )
 
     def draw(self):
-        """docstring."""
+        """Рисует яблоко на игровом поле."""
         rect = pygame.Rect((self.position), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
-    """docstring."""
+    """Класс, описывающий змейку и её поведение."""
 
     def __init__(self):
-        """docstring."""
+        """Начальное состояние змейки."""
         super().__init__()
         self.body_color = SNAKE_COLOR
         self.length = 1
@@ -88,13 +92,13 @@ class Snake(GameObject):
         self.last = None
 
     def update_direction(self, direction):
-        """docstring."""
+        """Обновляет направление движения."""
         a = (self.direction[0] * -1, self.direction[1] * -1)
         if direction and a != direction:
             self.next_direction = direction
 
     def move(self):
-        """docstring."""
+        """Вычисляет новую позицию головы и обновляет тело змейки."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
@@ -112,7 +116,7 @@ class Snake(GameObject):
             self.last = self.positions.pop()
 
     def draw(self) -> None:
-        """docstring."""
+        """Отрисовывает все сегменты тела змейки."""
         for position in self.positions:
             rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
@@ -123,18 +127,18 @@ class Snake(GameObject):
             pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def get_head_position(self):
-        """docstring."""
+        """Возвращает текущие координаты головы змейки."""
         return self.positions[0]
 
     def reset(self):
-        """docstring."""
+        """Сбрасывает состояние змейки при столкновении с собой."""
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = (1, 0)
         self.next_direction = None
 
     def wrap_around_screen(self, position):
-        """docstring."""
+        """Прыжок с одного конца экрана на другой."""
         x, y = position
         if x < 0:
             x = SCREEN_WIDTH - GRID_SIZE
@@ -148,7 +152,7 @@ class Snake(GameObject):
 
 
 def handle_keys(snake):
-    """docstring."""
+    """Обрабатывает нажатия клавиш."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -167,9 +171,7 @@ def handle_keys(snake):
 
 
 def main():
-    """docstring."""
-    pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Змейка")
+    """Основной игровой цикл."""
     snake = Snake()
     apple = Apple()
     while True:
@@ -188,7 +190,7 @@ def main():
         apple.draw()
 
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(SPEED)
 
 
 if __name__ == "__main__":

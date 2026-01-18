@@ -1,3 +1,5 @@
+"""docstring."""
+
 import random
 
 import pygame
@@ -41,35 +43,42 @@ clock = pygame.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
+    """docstring."""
+
     def __init__(self) -> None:
+        """docstring."""
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
 
-    def draw(self):
-        pass
-
 
 class Apple(GameObject):
+    """docstring."""
+
     def __init__(self):
+        """docstring."""
         super().__init__()
         self.body_color = APPLE_COLOR
         self.randomize_position()
 
     def randomize_position(self):
+        """docstring."""
         self.position = (
             int(random.randint(0, 640) / GRID_SIZE) * GRID_SIZE,
             int(random.randint(0, 480) / GRID_SIZE) * GRID_SIZE,
         )
 
     def draw(self):
+        """docstring."""
         rect = pygame.Rect((self.position), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
+    """docstring."""
 
     def __init__(self):
+        """docstring."""
         super().__init__()
         self.body_color = SNAKE_COLOR
         self.length = 1
@@ -79,10 +88,13 @@ class Snake(GameObject):
         self.last = None
 
     def update_direction(self, direction):
-        if direction and (self.direction[0] * -1, self.direction[1] * -1) != direction:
+        """docstring."""
+        a = (self.direction[0] * -1, self.direction[1] * -1)
+        if direction and a != direction:
             self.next_direction = direction
 
     def move(self):
+        """docstring."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
@@ -99,7 +111,8 @@ class Snake(GameObject):
         if len(self.positions) > self.length:
             self.last = self.positions.pop()
 
-    def draw(self, screen):
+    def draw(self) -> None:
+        """docstring."""
         for position in self.positions:
             rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
@@ -110,15 +123,18 @@ class Snake(GameObject):
             pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def get_head_position(self):
+        """docstring."""
         return self.positions[0]
 
     def reset(self):
+        """docstring."""
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = (1, 0)
         self.next_direction = None
 
     def wrap_around_screen(self, position):
+        """docstring."""
         x, y = position
         if x < 0:
             x = SCREEN_WIDTH - GRID_SIZE
@@ -132,6 +148,7 @@ class Snake(GameObject):
 
 
 def handle_keys(snake):
+    """docstring."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -150,13 +167,11 @@ def handle_keys(snake):
 
 
 def main():
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    """docstring."""
+    pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Змейка")
-
     snake = Snake()
     apple = Apple()
-
     while True:
         handle_keys(snake)
         snake.move()
@@ -169,11 +184,11 @@ def main():
             snake.reset()
 
         screen.fill(BOARD_BACKGROUND_COLOR)
-        snake.draw(screen)
+        snake.draw()
         apple.draw()
 
         pygame.display.update()
-        clock.tick(SPEED)
+        clock.tick(10)
 
 
 if __name__ == "__main__":

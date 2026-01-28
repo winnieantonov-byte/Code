@@ -1,6 +1,5 @@
 """Импорты библеотек."""
-
-import random
+from random import randint
 
 import pygame
 
@@ -44,7 +43,7 @@ clock = pygame.time.Clock()
 # Тут опишите все классы игры.
 class GameObject:
     """Базовый класс для всех игровых объектов."""
-
+    
     def __init__(self) -> None:
         """Инициализирует базовые атрибуты."""
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
@@ -67,8 +66,8 @@ class Apple(GameObject):
     def randomize_position(self):
         """Устанавливает случайные координаты яблока, выровненные по сетке."""
         self.position = (
-            int(random.randint(0, 640) / GRID_SIZE) * GRID_SIZE,
-            int(random.randint(0, 480) / GRID_SIZE) * GRID_SIZE,
+            int(randint(0, 640) / GRID_SIZE) * GRID_SIZE,
+            int(randint(0, 480) / GRID_SIZE) * GRID_SIZE,
         )
 
     def draw(self):

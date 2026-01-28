@@ -43,7 +43,7 @@ clock = pygame.time.Clock()
 # Тут опишите все классы игры.
 class GameObject:
     """Базовый класс для всех игровых объектов."""
-    
+
     def __init__(self) -> None:
         """Инициализирует базовые атрибуты."""
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
